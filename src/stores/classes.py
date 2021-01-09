@@ -1,6 +1,7 @@
 from collections import namedtuple
 
+PlatformAttr = namedtuple("PlatformAttr", ("platform", "name", "value"))
 Developer = namedtuple("Developer", ("name", "url"))
-IAP = namedtuple("IAP", ("name", "price"))
+Price = namedtuple("Price", ("name", "price"))
 PrivacyCard = namedtuple("PrivacyCard", ("title", "items"))
 Rating = namedtuple("Rating", ("value", "count"))

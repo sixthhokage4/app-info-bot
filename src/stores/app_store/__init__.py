@@ -6,7 +6,7 @@ from bs4 import BeautifulSoup
 from settings import GITHUB
 from stores.classes import (
     Developer,
-    IAP,
+    Price,
     PrivacyCard,
     Rating,
 )
@@ -55,7 +55,7 @@ class AppStoreApplication:
         return Developer(name=tag.text.strip(), url=tag["href"])
 
     @property
-    def iaps(self) -> list[IAP]:
+    def iaps(self) -> list[Price]:
         tags = find_all_by_attr(self.soup, "li", "data-test-app-info-iap")
 
         iaps = []
@@ -64,9 +64,9 @@ class AppStoreApplication:
             split = li.text.strip().split("\n")
 
             if len(split) == 2:
-                iaps.append(IAP(split[0], split[1]))
+                iaps.append(Price(split[0], split[1]))
             elif len(split) == 1:
-                iaps.append(IAP(split[0], ""))
+                iaps.append(Price(split[0], ""))
 
         return iaps
 

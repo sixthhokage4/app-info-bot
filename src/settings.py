@@ -15,4 +15,3 @@ REDDIT_CLIENTSECRET = os.environ.get("REDDIT_CLIENTSECRET")
 REDDIT_USERAGENT = os.environ.get("REDDIT_USERAGENT")
 
 REDDIT_SUBREDDITS = os.environ.get("REDDIT_SUBREDDITS", "test,test2").split(",")
-
