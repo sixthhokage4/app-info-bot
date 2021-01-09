@@ -4,6 +4,7 @@ import logging
 from flask import Flask
 from flask_cors import CORS
 
+import auth
 import bot
 from settings import IP, PORT
 
@@ -12,7 +13,8 @@ CORS(app)
 
 
 @app.route("/run")
-def run_bot():
+@auth.api_key
+def run():
     result = bot.run()
     return json.dumps(result)
 
