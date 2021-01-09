@@ -5,6 +5,8 @@ IP = "127.0.0.1" if PORT == 6000 else "0.0.0.0"
 
 API_KEY = os.environ.get("API_KEY", "test")
 
+GITHUB = "https://github.com/fedecalendino/app-info-bot"
+
 REDDIT_USERNAME = os.environ.get("REDDIT_USERNAME")
 REDDIT_PASSWORD = os.environ.get("REDDIT_PASSWORD")
 
@@ -13,3 +15,4 @@ REDDIT_CLIENTSECRET = os.environ.get("REDDIT_CLIENTSECRET")
 REDDIT_USERAGENT = os.environ.get("REDDIT_USERAGENT")
 
 REDDIT_SUBREDDITS = os.environ.get("REDDIT_SUBREDDITS", "test,test2").split(",")
+

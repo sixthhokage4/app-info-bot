@@ -3,6 +3,7 @@ from urllib import parse
 import requests
 from bs4 import BeautifulSoup
 
+from settings import GITHUB
 from stores.classes import (
     Developer,
     IAP,
@@ -195,5 +196,11 @@ class AppStoreApplication:
                 lines.append(f" * {card.title}: {fancy_join(', ', card.items, ' & ')}.")
             else:
                 lines.append(f" * {card.title}.")
+
+        lines.append("")
+        lines.append("---")
+        lines.append("")
+
+        lines.append(f"^[github]({GITHUB})")
 
         return "  \n".join(lines)
