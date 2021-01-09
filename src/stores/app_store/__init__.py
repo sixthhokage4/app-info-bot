@@ -1,4 +1,3 @@
-from collections import namedtuple
 from urllib import parse
 
 import requests
@@ -7,10 +6,12 @@ from bs4 import BeautifulSoup
 from utils import fancy_join
 from .helpers import find_by_attr, find_all_by_attr
 
-Developer = namedtuple("Developer", ("name", "url"))
-Rating = namedtuple("Rating", ("value", "count"))
-IAP = namedtuple("IAP", ("name", "price"))
-PrivacyCard = namedtuple("PrivacyCard", ("title", "items"))
+from stores.classes import (
+    Developer,
+    IAP,
+    PrivacyCard,
+    Rating,
+)
 
 
 class Application:
