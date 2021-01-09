@@ -14,14 +14,16 @@ from stores.classes import (
 )
 
 
-class Application:
+class AppStoreApplication:
+    store = "App Store"
+
     @staticmethod
     def us_store(url: str) -> str:
         url = parse.urlsplit(url)
         path = url.path
 
         if not path.startswith("/app"):
-            path = url.path.split('/', 2)[-1]
+            path = url.path.split("/", 2)[-1]
 
         return f"https://{url.hostname}/{path}"
 
