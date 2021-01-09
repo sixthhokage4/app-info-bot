@@ -1,5 +1,4 @@
 from collections import namedtuple
-from typing import List
 
 import requests
 from bs4 import BeautifulSoup
@@ -25,7 +24,7 @@ class Application:
         return tag.text.strip().split(". ")[0] if tag else None
 
     @property
-    def description(self) -> List[str]:
+    def description(self) -> list[str]:
         tag = find_by_attr(self.soup, "div", "data-test-description")
         return [str(p) for p in tag.find("p") if str(p) != "<br/>"]
 
@@ -35,7 +34,7 @@ class Application:
         return Developer(name=tag.text.strip(), url=tag["href"])
 
     @property
-    def iaps(self) -> List[IAP]:
+    def iaps(self) -> list[IAP]:
         tags = find_all_by_attr(self.soup, "li", "data-test-app-info-iap")
 
         iaps = []
@@ -56,7 +55,7 @@ class Application:
         return tag.text if tag else None
 
     @property
-    def platforms(self) -> List[str]:
+    def platforms(self) -> list[str]:
         tags = find_all_by_attr(self.soup, "a", "data-test-app-platform-link")
         return [a.text.strip() for a in tags]
 
@@ -66,7 +65,7 @@ class Application:
         return tag.text.strip()
 
     @property
-    def privacy_cards(self) -> List[PrivacyCard]:
+    def privacy_cards(self) -> list[PrivacyCard]:
         tags = self.soup.find_all("div", class_="ember-view app-privacy__card")
 
         cards = []

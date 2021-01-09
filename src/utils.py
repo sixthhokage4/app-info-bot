@@ -1,7 +1,4 @@
-from typing import List
-
-
-def fancy_join(sep: str, items: List[str], final: str = None) -> str:
+def fancy_join(sep: str, items: list[str], final: str = None) -> str:
     if not items:
         return ""
 
