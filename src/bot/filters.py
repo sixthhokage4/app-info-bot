@@ -6,11 +6,15 @@ from settings import REDDIT_USERNAME
 from stores import SUPPORTED_STORES
 
 
+def is_old(submission: Submission) -> bool:
+    return submission.created_utc < 1610150400  # 2019-01-09
+
+
 def is_self(submission: Submission) -> bool:
     return submission.is_self
 
 
-def is_old(submission: Submission) -> bool:
+def was_analyzed(submission: Submission) -> bool:
     for comment in submission.comments:
         author = comment.author
 

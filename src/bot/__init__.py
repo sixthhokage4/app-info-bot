@@ -9,7 +9,6 @@ from settings import REDDIT_SUBREDDITS
 from stores import SUPPORTED_STORES
 from . import filters
 
-logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 
@@ -26,23 +25,55 @@ def analyze_submission(submission: Submission):
     logger.info("Replied to %s", submission.permalink)
 
 
-def analyze_subreddit(subreddit: str):
-    for submission in list(reddit.subreddit(subreddit).new(limit=25)):
-        if filters.is_self(submission):
-            continue
+def analyze_subreddit(subreddit: str) -> dict:
+    logger.info("Looking for posts in /r/%s", subreddit)
 
-        if filters.is_unsupported(submission):
+    result = {
+        "analyzed": [],
+        "is_old": [],
+        "is_self": [],
+        "is_unsupported": [],
+        "was_analyzed": [],
+        "error": [],
+    }
+
+    for submission in list(reddit.subreddit(subreddit).new(limit=15)):
+        data = {"id": submission.id, "title": submission.title}
+
+        if filters.is_self(submission):
+            result["is_self"].append(data)
             continue
 
         if filters.is_old(submission):
+            result["is_old"].append(data)
+            continue
+
+        if filters.is_unsupported(submission):
+            result["is_unsupported"].append(data)
+            continue
+
+        if filters.was_analyzed(submission):
+            result["was_analyzed"].append(data)
             continue
 
         try:
             analyze_submission(submission)
             sleep(1)
+
+            result["analyzed"].append(data)
         except Exception as exc:
+            data["error"] = str(exc)
+
             logging.error(exc, exc_info=True)
+            result["errors"].append(data)
+
+    return result
 
 
-def run():
-    list(map(analyze_subreddit, REDDIT_SUBREDDITS))
+def run() -> dict:
+    result = {}
+
+    for subreddit in REDDIT_SUBREDDITS:
+        result[subreddit] = analyze_subreddit(subreddit)
+
+    return result
