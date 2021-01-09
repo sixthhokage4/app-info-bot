@@ -3,15 +3,14 @@ from urllib import parse
 import requests
 from bs4 import BeautifulSoup
 
-from utils import fancy_join
-from .helpers import find_by_attr, find_all_by_attr
-
 from stores.classes import (
     Developer,
     IAP,
     PrivacyCard,
     Rating,
 )
+from utils import fancy_join
+from .helpers import find_by_attr, find_all_by_attr
 
 
 class AppStoreApplication:
