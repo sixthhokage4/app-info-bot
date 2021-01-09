@@ -1,5 +1,23 @@
-from stores import app_store
+import json
+import logging
 
-app = app_store.Application("https://apps.apple.com/us/app/apollo-for-reddit/id979274575")
+from flask import Flask
+from flask_cors import CORS
 
-print(app)
+import bot
+from settings import IP, PORT
+
+app = Flask(__name__)
+CORS(app)
+
+
+@app.route("/run")
+def run_bot():
+    result = bot.run()
+    return json.dumps(result)
+
+
+if __name__ == "__main__":
+    logging.basicConfig(level=logging.INFO)
+
+    app.run(host=IP, port=PORT)
