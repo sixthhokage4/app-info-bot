@@ -1,4 +1,5 @@
 from collections import namedtuple
+from urllib import parse
 
 import requests
 from bs4 import BeautifulSoup
@@ -13,10 +14,27 @@ PrivacyCard = namedtuple("PrivacyCard", ("title", "items"))
 
 
 class Application:
+    @staticmethod
+    def us_store(url: str) -> str:
+        url = parse.urlsplit(url)
+        path = url.path
 
-    def __init__(self, url: str):
+        if not path.startswith("/app"):
+            path = url.path.split('/', 2)[-1]
+
+        return f"https://{url.hostname}/{path}"
+
+    def __init__(self, url: str, use_us_store: bool = True):
+        if use_us_store:
+            url = self.us_store(url)
+
         response = requests.get(url)
         self.soup = BeautifulSoup(response.content, features="html.parser")
+
+    @property
+    def category(self) -> str:
+        tag = find_by_attr(self.soup, "dd", "data-test-app-info-category")
+        return tag.text.strip() if tag else None
 
     @property
     def compatibility(self) -> str:
@@ -70,12 +88,15 @@ class Application:
 
         cards = []
         for tag in tags:
-            spans = tag.find_all("span", class_="privacy-type__grid-content privacy-type__data-category-heading")
+            spans = tag.find_all(
+                "span",
+                class_="privacy-type__grid-content privacy-type__data-category-heading",
+            )
 
             cards.append(
                 PrivacyCard(
                     title=tag.find("h3", class_="privacy-type__heading").text,
-                    items=list(map(lambda span: span.text.strip(), spans))
+                    items=list(map(lambda span: span.text.strip(), spans)),
                 )
             )
 
@@ -128,6 +149,7 @@ class Application:
 
         lines.append("#### ℹ️ **App Info**")
 
+        lines.append(f"**Category**: {self.category}.")
         lines.append(f"**Compatibility**: {self.compatibility}.")
         lines.append(f"**Platforms**: {fancy_join(', ', self.platforms, ' & ')}.")
 
